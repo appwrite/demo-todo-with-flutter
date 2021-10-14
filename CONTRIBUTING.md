@@ -74,8 +74,6 @@ This will allow the Appwrite community to have sufficient discussion about the n
 
 This is also important for the Appwrite lead developers to be able to give technical input and different emphasis regarding the feature design and architecture. Some bigger features might need to go through our [RFC process](https://github.com/appwrite/rfc).
 
-
-
 ## Other Ways to Help
 
 Pull requests are great, but there are many other areas where you can help Appwrite. 
