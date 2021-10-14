@@ -63,57 +63,6 @@ $ git push origin [name_of_your_new_branch]
 8. After approval, merge your PR
 9. GitHub will automatically delete the branch after the merge is done. (they can still be restored).
 
-## Setup From Source
-
-To set up a working development environment, just fork the project git repository and upgrade the packages.
-
-Please note that these instructions are for setting a functional environment. If you want to run a the app on mobile phones, you should probably follow this instructions in the [getting started guide](/https://flutter.dev/docs/get-started/)
-
-```bash
-git clone git@github.com:[YOUR_FORK_HERE]/demo-todo-with-flutter.git
-cd demo-todo-with-flutter
-flutter packages upgrade
-flutter run
-```
-
-## Get Started
-After finishing the installation and upgrading process, you can start writing and editing code.
-
-## Advanced Topics
-We love to create issues that are good for beginners and label them as good first issue or hacktoberfest, but some more advanced topics might require extra knowledge. Below is a list of links you can use to learn more about some of the more advance topics that will help you master the Appwrite codebase.
-
-
-### File Structure
-
-```bash
-.
-├── demo-todo-with-flutter # Main application
-│   ├── android # Android files
-│   │   ├── app
-│   │   ├── gradle/wrapper
-│   │   └── gradle.properties
-│   │   └── settings.gradle
-│   ├── assets # Images Folder
-│   ├── ios # IOS files
-│   │   ├── Runner
-│   │   ├── Runner.xcodeproj
-│   │   └── Runner.scworkspace
-│   ├── lib # Dart files
-│   │   ├── main.dart # important file to run the application
-│   │   ├── data # folder which contains all MVS 
-│   │   └── widgets # folder with all the widget files
-│   │   └── pages # folder with all the screens files
-│   ├── test # It is used to test the application
-│   │   └── widget_test.dart
-│   ├── web # Web Application related files
-│   │   └── index.html # main file
-│   │   └── favicon.png # flutter icon image
-│   │   └── manifest.json
-│   ├── .metadata # Config files
-│   ├── pubspec.lock # Which has all your packages wrt to version
-│   ├── pubspec.yaml # Here we can add new packages and we can change some settings
-```
-
 
 ## Introducing New Features
 
