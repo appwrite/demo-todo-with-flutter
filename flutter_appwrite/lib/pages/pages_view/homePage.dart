@@ -266,7 +266,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   _upload() async {
-    var image = await ImagePicker().getImage(
+    var image = await ImagePicker().pickImage(
       source: ImageSource.gallery,
     );
     if (image == null) return;

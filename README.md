@@ -18,22 +18,16 @@ We need to make a few configuration changes to your Appwrite server.
 1. Add a new Flutter App (Android or iOS or both) in Appwrite and enter application id of your application (io.appwrite.todo, etc) 
 ![image](https://user-images.githubusercontent.com/73419211/122684732-e9eac700-d226-11eb-954c-f7cb5327d042.png)
 
-2. Create a new collection with the following properties
+1. Create a new collection with custom ID `todos` and set the permission to document level.
 
-  - Rules
+Add the following attributes to the collection.
 
-Add the following rules to the collection.
-
-    Make sure that your key exactly matches the key in the images
-   
-  ![image](https://user-images.githubusercontent.com/73419211/122684906-0a675100-d228-11eb-91d0-ff70e216b7cb.png)
-  ![image](https://user-images.githubusercontent.com/73419211/122684925-2965e300-d228-11eb-87a6-301cff857fb9.png)
-
- - Permissions
-
-Add the following permissions to your collections. These permissions ensure that only registered users can access the collection.
-
-![image](https://user-images.githubusercontent.com/73419211/122684974-819ce500-d228-11eb-93c6-4d2b05167633.png)
+| Type    | Attribute ID | Required | Options    |   |   |   |   |   |   |
+|---------|--------------|----------|------------|---|---|---|---|---|---|
+| String  | title        | true     | Size: 255  |   |   |   |   |   |   |
+| String  | description  | false    | Size: 2000 |   |   |   |   |   |   |
+| Integer | like         | false    | Default: 0 |   |   |   |   |   |   |
+| Integer | date         | true     |            |   |   |   |   |   |   |
 
 ## 🚀 Deploy the Front End
 
@@ -53,9 +47,10 @@ $ cd todo-with-flutter
 Make a one file in the Clone Repo called constant.dart
 
     class AppConstant {
-    static const String projectid = 'your appwrite project id';
+    static const String projectId = 'your appwrite project id';
     static const String endPoint = 'your own endpoint';
-    static const String database = 'your appwrite database id';
+    static const String collectionId = 'your appwrite collection id';
+    static const String bucketId = 'your appwrite bucket id';
     }
 
 Now run the following commands and you should be good to go 💪🏼
