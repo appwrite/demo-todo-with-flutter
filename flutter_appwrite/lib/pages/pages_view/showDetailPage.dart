@@ -1,9 +1,9 @@
 import 'dart:math';
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:easy_one/data/model/addData_model.dart';
-import 'package:easy_one/data/model/user_model.dart';
 import 'package:easy_one/data/services/api_service.dart';
 import 'package:easy_one/pages/pages_view/homePage.dart';
 import 'package:easy_one/widget/elevatedButton_widget.dart';
@@ -182,8 +182,8 @@ class _ShowDetailPageState extends State<ShowDetailPage> {
                                             await ApiService.instance.editData(
                                           addData: checkData,
                                           documentId: widget.addData.id,
-                                          write: ['user:${widget.user.id}'],
-                                          read: ['user:${widget.user.id}'],
+                                          write: ['user:${widget.user.$id}'],
+                                          read: ['user:${widget.user.$id}'],
                                         );
                                         print(added);
                                         _getDataInsert();

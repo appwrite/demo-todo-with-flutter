@@ -1,6 +1,6 @@
+import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:easy_one/data/model/user_model.dart';
 import 'package:easy_one/data/services/api_service.dart';
 import 'package:easy_one/pages/auth_page/loginPage.dart';
 import 'package:easy_one/pages/pages_view/homePage.dart';

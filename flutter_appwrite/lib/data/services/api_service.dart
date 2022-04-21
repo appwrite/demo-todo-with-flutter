@@ -1,8 +1,7 @@
 import 'dart:typed_data';
-
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart';
 import 'package:easy_one/data/model/addData_model.dart';
-import 'package:easy_one/data/model/user_model.dart';
 
 import 'package:easy_one/res/constant.dart';
 
@@ -16,7 +15,7 @@ class ApiService {
 
   ApiService._internal() {
     _client = Client(endPoint: AppConstant.endPoint)
-        .setProject(AppConstant.projectid)
+        .setProject(AppConstant.projectId)
         .setSelfSigned();
     _account = Account(_client);
     _db = Database(_client);
@@ -35,7 +34,8 @@ class ApiService {
   }
 
   Future signup({String name, String email, String password}) {
-    return _account.create(name: name, email: email, password: password);
+    return _account.create(
+        userId: 'unique()', name: name, email: email, password: password);
   }
 
   Future updateanylogin({String email, String password}) {
@@ -47,8 +47,7 @@ class ApiService {
   }
 
   Future<User> getUser() async {
-    final res = await _account.get();
-    return User.fromMap(res.data);
+    return await _account.get();
   }
 
   Future<AddData> getAddData({
@@ -57,7 +56,7 @@ class ApiService {
     List<String> write,
   }) async {
     final res = await _db.createDocument(
-      collectionId: AppConstant.database,
+      collectionId: AppConstant.collectionId,
       data: addData.toMap(),
       read: read,
       write: write,
@@ -69,16 +68,14 @@ class ApiService {
     final res = await _db.listDocuments(
       // offset: 100,
       limit: 100,
-      collectionId: AppConstant.database,
+      collectionId: AppConstant.collectionId,
     );
-    return List<Map<String, dynamic>>.from(res.data['documents'])
-        .map((e) => AddData.fromMap(e))
-        .toList();
+    return res.convertTo<AddData>((p0) => AddData.fromMap(p0));
   }
 
   Future deleteData({String documentId}) async {
     return await _db.deleteDocument(
-        collectionId: AppConstant.database, documentId: documentId);
+        collectionId: AppConstant.collectionId, documentId: documentId);
   }
 
   Future<AddData> editData({
@@ -88,7 +85,7 @@ class ApiService {
     List<String> write,
   }) async {
     final res = await _db.updateDocument(
-      collectionId: AppConstant.database,
+      collectionId: AppConstant.collectionId,
       documentId: documentId,
       data: addData.toMap(),
       read: read,
@@ -98,25 +95,26 @@ class ApiService {
     return AddData.fromMap(res.data);
   }
 
-  Future<Map<String, dynamic>> uploadPicture(
-    MultipartFile file,
+  Future<File> uploadPicture(
+    InputFile file,
     List<String> permission,
   ) async {
     var res = await _storage.createFile(
+      bucketId: AppConstant.bucketId,
       file: file,
       read: permission,
       write: permission,
     );
-    return res.data;
+    return res;
   }
 
   Future<Map<String, dynamic>> updatePrefs(Map<String, dynamic> prefs) async {
     final res = await _account.updatePrefs(prefs: prefs);
-    return res.data;
+    return res.toMap();
   }
 
   Future<Uint8List> getProfile(String fileId) async {
-    final res = await _storage.getFilePreview(fileId: fileId);
-    return res.data;
+    final res = await _storage.getFilePreview(bucketId: AppConstant.bucketId, fileId: fileId);
+    return res;
   }
 }

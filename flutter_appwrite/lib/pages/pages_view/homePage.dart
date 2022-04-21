@@ -1,10 +1,10 @@
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:easy_one/data/model/addData_model.dart';
-import 'package:easy_one/data/model/user_model.dart';
 import 'package:easy_one/data/services/api_service.dart';
 import 'package:easy_one/main.dart';
 import 'package:easy_one/pages/pages_view/showDetailPage.dart';
@@ -76,10 +76,10 @@ class _HomePageState extends State<HomePage> {
                     decoration: BoxDecoration(
                       color: Colors.indigo.shade500,
                     ),
-                    currentAccountPicture: widget.user.prefs['photo'] != null
+                    currentAccountPicture: widget.user.prefs.data['photo'] != null
                         ? FutureBuilder(
                             future: ApiService.instance.getProfile(
-                              widget.user.prefs['photo'],
+                              widget.user.prefs.data['photo'],
                             ),
                             builder: (_, snapshot) {
                               return CircleAvatar(
@@ -131,9 +131,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       appBar: appbar(),
-      body: StaggeredGridView.countBuilder(
-        staggeredTileBuilder: (int index) =>
-            new StaggeredTile.count(1, index.isEven ? 0.5 : 0.7),
+      body: MasonryGridView.count(
         physics: BouncingScrollPhysics(),
         itemCount: gettingData.length,
         crossAxisCount: 2,
@@ -249,8 +247,8 @@ class _HomePageState extends State<HomePage> {
                       try {
                         var added = await ApiService.instance.getAddData(
                           addData: checkData,
-                          write: ['user:${widget.user.id}'],
-                          read: ['user:${widget.user.id}'],
+                          write: ['user:${widget.user.$id}'],
+                          read: ['user:${widget.user.$id}'],
                         );
                         print(added);
                         _getDataInsert();
@@ -272,13 +270,13 @@ class _HomePageState extends State<HomePage> {
       source: ImageSource.gallery,
     );
     if (image == null) return;
-    final file = await MultipartFile.fromFile(image.path);
+    final file = await InputFile(path: image.path, filename: 'profile.img');
     try {
       final res = await ApiService.instance.uploadPicture(
         file,
-        ['user:${widget.user.id}'],
+        ['user:${widget.user.$id}'],
       );
-      final id = res['\$id'];
+      final id = res.$id;
       if (id != null) {
         await ApiService.instance.updatePrefs(
           {'photo': id},
