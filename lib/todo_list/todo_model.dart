@@ -33,7 +33,7 @@ class TodoModel {
     return TodoModel(
       documentId: map['\$id'] as String,
       content: map['content'] as String,
-      isCompleted: map['isCompleted'] as bool,
+      isCompleted: map['isCompleted'] as bool? ?? false,
     );
   }
 
