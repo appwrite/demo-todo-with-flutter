@@ -5,14 +5,14 @@ import 'authentication_provider.dart';
 import 'widgets/inverted_color_button.dart';
 import 'widgets/label_text_field.dart';
 
-class AuthenticationScreen extends StatefulWidget {
+class AuthenticationScreen extends ConsumerStatefulWidget {
   const AuthenticationScreen({Key? key}) : super(key: key);
 
   @override
   _AuthenticationScreenState createState() => _AuthenticationScreenState();
 }
 
-class _AuthenticationScreenState extends State<AuthenticationScreen> {
+class _AuthenticationScreenState extends ConsumerState<AuthenticationScreen> {
   bool isLogin = true, enableButton = false;
 
   late final TextEditingController _nameController = TextEditingController();
@@ -124,14 +124,14 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   }
 
   Future<void> _login() async {
-    return context.read(authProvider.notifier).login(
+    return ref.read(authProvider.notifier).login(
           email: _emailController.text,
           password: _passwordController.text,
         );
   }
 
   Future<void> _signUp() async {
-    return context.read(authProvider.notifier).signUp(
+    return ref.read(authProvider.notifier).signUp(
           name: _nameController.text,
           email: _emailController.text,
           password: _passwordController.text,

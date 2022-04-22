@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:routemaster/routemaster.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart' as dotenv;
-
 import 'authentication/authentication_provider.dart';
 import 'utils/routing.dart';
 import 'utils/themes.dart';
@@ -17,8 +16,8 @@ Future<void> main() async {
 
 class MyApp extends ConsumerWidget {
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final userId = watch(authProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userId = ref.watch(authProvider);
 
     return ScreenUtilInit(
       builder: () => MaterialApp.router(

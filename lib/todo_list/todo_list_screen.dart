@@ -11,8 +11,8 @@ class TodoListScreen extends ConsumerWidget {
   const TodoListScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final _todoProvider = watch(todoProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final _todoProvider = ref.watch(todoProvider);
     return Scaffold(
       body: CustomScrollView(
         anchor: .2,
@@ -61,7 +61,7 @@ class TodoListScreen extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 45, vertical: 20),
           ),
           onPressed: () {
-            context.read(authProvider.notifier).logout();
+            ref.read(authProvider.notifier).logout();
           },
           child: const Text(
             "Logout👋",
@@ -73,14 +73,14 @@ class TodoListScreen extends ConsumerWidget {
   }
 }
 
-class _TextBoxWidget extends StatefulWidget {
+class _TextBoxWidget extends ConsumerStatefulWidget {
   const _TextBoxWidget({Key? key}) : super(key: key);
 
   @override
   __TextBoxWidgetState createState() => __TextBoxWidgetState();
 }
 
-class __TextBoxWidgetState extends State<_TextBoxWidget> {
+class __TextBoxWidgetState extends ConsumerState<_TextBoxWidget> {
   final _controller = TextEditingController();
 
   @override
@@ -112,9 +112,7 @@ class __TextBoxWidgetState extends State<_TextBoxWidget> {
                     fontWeight: FontWeight.w500,
                   ),
                   onSubmitted: (value) async {
-                    await context
-                        .read(todoProvider.notifier)
-                        .createTodo(TodoModel(
+                    await ref.read(todoProvider.notifier).createTodo(TodoModel(
                           content: value,
                           isCompleted: false,
                         ));
@@ -150,9 +148,9 @@ class __TextBoxWidgetState extends State<_TextBoxWidget> {
 class _TodoWidget extends ConsumerWidget {
   const _TodoWidget({Key? key}) : super(key: key);
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final width = MediaQuery.of(context).size.width;
-    final todo = watch(scopedTodo);
+    final todo = ref.watch(scopedTodo);
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -173,10 +171,10 @@ class _TodoWidget extends ConsumerWidget {
                   child: Transform.scale(
                     scale: 1.4.sp,
                     child: Checkbox(
-                      value: todo.isCompleted,
+                      value: todo?.isCompleted,
                       onChanged: (value) {
-                        context.read(todoProvider.notifier).updateTodo(
-                              todo.copyWith(
+                        ref.read(todoProvider.notifier).updateTodo(
+                              todo!.copyWith(
                                 isCompleted: !todo.isCompleted,
                               ),
                             );
@@ -187,7 +185,7 @@ class _TodoWidget extends ConsumerWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    todo.content,
+                    todo!.content,
                     overflow: TextOverflow.visible,
                     style: TextStyle(
                       fontSize: 18.sp,
@@ -203,7 +201,7 @@ class _TodoWidget extends ConsumerWidget {
                     iconSize: 30.sp,
                     hoverColor: Colors.transparent,
                     onPressed: () {
-                      context.read(todoProvider.notifier).deleteTodo(todo);
+                      ref.read(todoProvider.notifier).deleteTodo(todo);
                     },
                     icon: const Icon(Icons.delete_outline_rounded),
                   ),

@@ -17,27 +17,12 @@ We need to make a few configuration changes to your Appwrite server.
 1. Add a new Web App in Appwrite and enter the endpoint of your website (`localhost, <project-name>.vercel.app etc`)
 ![Create Web App](https://user-images.githubusercontent.com/20852629/113019434-3c27c900-919f-11eb-997c-1da5a8303ceb.png)
 
-2. Create a new collection with the following properties
-* **Rules**
+2. Create a new collection with the following attributes and permission level set to `document`
 
-Add the following rules to the collection.
-> Make sure that your key exactly matches the key in the images
-
-<p align="center">
-<img src="https://user-images.githubusercontent.com/20852629/113019972-c3753c80-919f-11eb-9b3a-c3690785bbf4.png" alt="Content Rule" width="400"/>
-</p>
-
-<p align="center">
-<img src="https://user-images.githubusercontent.com/20852629/113020008-cec86800-919f-11eb-8cc2-473f8d15fc3f.png" alt="IsComplete Rule" width="400"/>
-</p>
-
-* **Permissions**
-
-Add the following permissions to your collections. These permissions ensure that only registered users can access the collection.
-
-<p align="center">
-<img src="https://user-images.githubusercontent.com/20852629/113019801-99bc1580-919f-11eb-9a94-13b1529cb925.png" alt="Collection Permissions" width="400"/>
-</p>
+| Type    | Attribute ID | Required | Options        |
+|---------|--------------|----------|----------------|
+| String  | content      | true     | Size: 1000     |
+| Boolean | isComplete   | false    | Default: false |
 
 ### 🚀 Deploy the Front End
 You have two options to deploy the front-end and we will cover both of them here. In either case, you will need to fill in these environment variables that help your frontend connect to Appwrite.

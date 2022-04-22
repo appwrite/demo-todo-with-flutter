@@ -1,7 +1,7 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../shared/appwrite_provider.dart';
 
 final authServiceProvider = Provider<_AuthService>((ref) {
@@ -21,16 +21,13 @@ class AuthProvider extends StateNotifier<String?> {
   late _AuthService _authService;
 
   Future<void> _init() async {
-    Response? result;
     try {
-      result = await _authService.getAccount();
+      final user = await _authService.getAccount();
+      state = user.$id;
     } on AppwriteException catch (e) {
       debugPrint(
         "message:${e.message}, code:${e.code}, response:${e.response}",
       );
-    }
-    if (result?.statusCode == 200) {
-      state = result!.data["\$id"] as String;
     }
   }
 
@@ -38,12 +35,9 @@ class AuthProvider extends StateNotifier<String?> {
     required String email,
     required String password,
   }) async {
-    final result =
-        await _authService.createSession(email: email, password: password);
-    debugPrint(result.toString());
-    if (result.statusCode == 201) {
-      state = result.data["\$id"] as String;
-    }
+    await _authService.createSession(email: email, password: password);
+    final user = await _authService.getAccount();
+    state = user.$id;
   }
 
   Future<void> signUp({
@@ -52,14 +46,12 @@ class AuthProvider extends StateNotifier<String?> {
     required String name,
   }) async {
     try {
-      final result = await _authService.createAccount(
+      await _authService.createAccount(
         email: email,
         password: password,
         name: name,
       );
-      if (result.statusCode == 201) {
-        await login(email: email, password: password);
-      }
+      await login(email: email, password: password);
     } on AppwriteException catch (e) {
       debugPrint(
         "message:${e.message}, code:${e.code}, response:${e.response}",
@@ -79,26 +71,27 @@ class _AuthService {
   _AuthService(Client client) : _account = Account(client);
   final Account _account;
 
-  Future<Response> createAccount({
+  Future<User> createAccount({
     required String email,
     required String password,
     required String name,
   }) {
-    return _account.create(email: email, password: password, name: name);
+    return _account.create(
+        userId: 'unique()', email: email, password: password, name: name);
   }
 
-  Future<Response> getAccount() {
+  Future<User> getAccount() {
     return _account.get();
   }
 
-  Future<Response> createSession({
+  Future<Session> createSession({
     required String email,
     required String password,
   }) {
     return _account.createSession(email: email, password: password);
   }
 
-  Future<Response> deleteCurrentSession() {
+  Future<dynamic> deleteCurrentSession() {
     return _account.deleteSession(sessionId: "current");
   }
 }

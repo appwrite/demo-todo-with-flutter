@@ -2,7 +2,6 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_appwrite/config.dart';
-
 import '../authentication/authentication_provider.dart';
 import '../shared/appwrite_provider.dart';
 import 'todo_model.dart';
@@ -12,7 +11,7 @@ typedef TodoData = AsyncData<List<TodoModel>>;
 typedef TodoLoading = AsyncLoading<List<TodoModel>>;
 typedef TodoError = AsyncError<List<TodoModel>>;
 
-final scopedTodo = ScopedProvider<TodoModel>(null);
+final scopedTodo = Provider<TodoModel?>((ref) => null);
 
 final todoProvider = StateNotifierProvider<TodoProvider, TodoValue>((ref) {
   return TodoProvider(ref.read);
@@ -31,21 +30,21 @@ class TodoProvider extends StateNotifier<TodoValue> {
     if (data != null)
       state = TodoData(data);
     else
-      state = TodoError("Something went wrong");
+      state = const TodoError("Something went wrong");
   }
 
   Future<void> createTodo(TodoModel model) async {
-    final oldTodos = state.data!.value;
+    final oldTodos = state.asData!.value;
     state = const TodoLoading();
     final data = await _service.createTodo(model);
     if (data != null)
       state = TodoData([data, ...oldTodos]);
     else
-      state = TodoError("Something went wrong");
+      state = const TodoError("Something went wrong");
   }
 
   Future<void> updateTodo(TodoModel model) async {
-    final oldTodos = state.data!.value;
+    final oldTodos = state.asData!.value;
     state = const TodoLoading();
     final data = await _service.updateTodo(model);
 
@@ -57,11 +56,11 @@ class TodoProvider extends StateNotifier<TodoValue> {
 
       state = TodoData(oldTodos);
     } else
-      state = TodoError("Something went wrong");
+      state = const TodoError("Something went wrong");
   }
 
   Future<void> deleteTodo(TodoModel model) async {
-    final oldTodos = state.data!.value;
+    final oldTodos = state.asData!.value;
     state = const TodoLoading();
     final data = await _service.deleteTodo(model);
     if (data != null && data) {
@@ -69,7 +68,7 @@ class TodoProvider extends StateNotifier<TodoValue> {
       oldTodos.removeAt(index);
       state = TodoData(oldTodos);
     } else
-      state = TodoError("Something went wrong");
+      state = const TodoError("Something went wrong");
   }
 }
 
@@ -88,14 +87,14 @@ class _TodoService {
   Future<TodoModel?> createTodo(TodoModel model) async {
     try {
       final result = await _database.createDocument(
+        documentId: 'unique()',
         collectionId: Config.collectionId,
         data: model.toMap(),
         read: ["user:$_userId"],
         write: ["user:$_userId"],
       );
-      if (result.statusCode == 201) {
-        return TodoModel.fromMap(result.data as Map<String, dynamic>);
-      }
+      return result.convertTo(
+          (data) => TodoModel.fromMap(Map<String, dynamic>.from(data)));
     } on AppwriteException catch (err) {
       debugPrint(err.response.toString());
     }
@@ -106,13 +105,8 @@ class _TodoService {
       final result = await _database.listDocuments(
         collectionId: Config.collectionId,
       );
-      if (result.statusCode == 200) {
-        final documents = result.data['documents'] as List;
-
-        return documents
-            .map((e) => TodoModel.fromMap(e as Map<String, dynamic>))
-            .toList();
-      }
+      return result
+          .convertTo((p0) => TodoModel.fromMap(Map<String, dynamic>.from(p0)));
     } on AppwriteException catch (err) {
       debugPrint(err.response.toString());
     }
@@ -127,23 +121,20 @@ class _TodoService {
         read: ["user:$_userId"],
         write: ["user:$_userId"],
       );
-      if (result.statusCode == 200) {
-        return TodoModel.fromMap(result.data as Map<String, dynamic>);
-      }
+      return result.convertTo(
+          (data) => TodoModel.fromMap(Map<String, dynamic>.from(data)));
     } on AppwriteException catch (err) {
       debugPrint(err.response.toString());
     }
   }
 
-  Future<bool?> deleteTodo(TodoModel update) async {
+  Future<bool> deleteTodo(TodoModel update) async {
     try {
-      final result = await _database.deleteDocument(
+      await _database.deleteDocument(
         collectionId: Config.collectionId,
         documentId: update.documentId!,
       );
-      if (result.statusCode == 204) {
-        return true;
-      }
+      return true;
     } on AppwriteException catch (err) {
       debugPrint(err.response.toString());
       return false;
