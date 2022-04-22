@@ -31,24 +31,13 @@ You have two options to deploy the front-end and we will cover both of them here
 * FLUTTER_APP_PROJECT - Your Appwrite project ID
 * FLUTTER_APP_COLLECTION_ID - Your Appwrite collection ID
 
-### **Deploy to a Static Hosting Provider**
-
-Use the following buttons to deploy to your favourite hosting provider in one click! We support Vercel, Netlify and DigitalOcean. You will need to enter the environment variables above when prompted.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Fappwrite%2Ftodo-with-flutter&env=FLUTTER_APP_COLLECTION_ID,FLUTTER_APP_PROJECT,FLUTTER_APP_ENDPOINT&envDescription=Your%20Appwrite%20Endpoint%2C%20Project%20ID%20and%20Collection%20ID%20)
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/appwrite/todo-with-flutter)
-
-[![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/appwrite/todo-with-flutter/tree/main)
-
-
 ### **Run locally**
 
 Follow these instructions to run the demo app locally
 
 ```sh
-$ git clone https://github.com/appwrite/todo-with-flutter
-$ cd todo-with-flutter
+$ git clone https://github.com/appwrite/demo-todo-with-flutter
+$ cd demo-todo-with-flutter
 ```
 
 Run the following command to generate your `.env` vars
