@@ -22,7 +22,7 @@ We need to make a few configuration changes to your Appwrite server.
 | Type    | Attribute ID | Required | Options        |
 |---------|--------------|----------|----------------|
 | String  | content      | true     | Size: 1000     |
-| Boolean | isComplete   | false    | Default: false |
+| Boolean | isCompleted   | false    | Default: false |
 
 ### 🚀 Deploy the Front End
 You have two options to deploy the front-end and we will cover both of them here. In either case, you will need to fill in these environment variables that help your frontend connect to Appwrite.
