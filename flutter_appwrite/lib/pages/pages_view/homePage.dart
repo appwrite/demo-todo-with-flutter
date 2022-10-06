@@ -272,7 +272,7 @@ class _HomePageState extends State<HomePage> {
       source: ImageSource.gallery,
     );
     if (image == null) return;
-    final file = await MultipartFile.fromFile(image.path);
+    final file = await MultipartFile.fromPath('image', image.path);
     try {
       final res = await ApiService.instance.uploadPicture(
         file,
