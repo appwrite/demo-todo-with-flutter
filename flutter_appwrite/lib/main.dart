@@ -27,19 +27,22 @@ class MyApp extends StatelessWidget {
 }
 
 class MainPage extends StatelessWidget {
-  const MainPage({Key key}) : super(key: key);
+  final Future<User> user = ApiService.instance.getUser();
+  MainPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<User>(
-        future: ApiService.instance.getUser(),
-        builder: (context, snapshot) {
+        future: user,
+        builder: (context,AsyncSnapshot<User> snapshot) {
+          print(snapshot.data);
           if (snapshot.connectionState == ConnectionState.waiting)
             return SplashPage();
-          if (snapshot.hasData)
+          if (snapshot.hasData) {
             return HomePage(
               user: snapshot.data,
             );
+          }
           return LoginPage();
         });
   }
