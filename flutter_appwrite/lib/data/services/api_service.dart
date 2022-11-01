@@ -1,17 +1,16 @@
 import 'dart:typed_data';
-
 import 'package:appwrite/appwrite.dart';
 import 'package:easy_one/data/model/addData_model.dart';
 import 'package:easy_one/data/model/user_model.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:easy_one/res/constant.dart';
 
 class ApiService {
   static ApiService _instance;
-
   Client _client;
   Account _account;
-  Database _db;
+  Databases _db;
   Storage _storage;
 
   ApiService._internal() {
@@ -19,7 +18,7 @@ class ApiService {
         .setProject(AppConstant.projectid)
         .setSelfSigned();
     _account = Account(_client);
-    _db = Database(_client);
+    _db = Databases(_client);
     _storage = Storage(_client);
   }
 
@@ -31,11 +30,11 @@ class ApiService {
   }
 
   Future login({String email, String password}) {
-    return _account.createSession(email: email, password: password);
+    return _account.createEmailSession(email: email, password: password);
   }
 
   Future signup({String name, String email, String password}) {
-    return _account.create(name: name, email: email, password: password);
+    return _account.create(name: name, email: email, password: password, userId: email);
   }
 
   Future updateanylogin({String email, String password}) {
@@ -48,7 +47,7 @@ class ApiService {
 
   Future<User> getUser() async {
     final res = await _account.get();
-    return User.fromMap(res.data);
+    return User.fromMap(res.toMap());
   }
 
   Future<AddData> getAddData({
@@ -57,10 +56,17 @@ class ApiService {
     List<String> write,
   }) async {
     final res = await _db.createDocument(
-      collectionId: AppConstant.database,
+      collectionId: AppConstant.collectionId,
       data: addData.toMap(),
-      read: read,
-      write: write,
+      // read: read,
+      // write: write,
+      permissions: [
+        'read',
+        'write',
+      ],
+      databaseId: AppConstant.database,
+      documentId: addData.id,
+
     );
     return AddData.fromMap(res.data);
   }
@@ -68,17 +74,18 @@ class ApiService {
   Future<List<AddData>> insertData() async {
     final res = await _db.listDocuments(
       // offset: 100,
-      limit: 100,
-      collectionId: AppConstant.database,
+      // limit: 100,
+      collectionId: AppConstant.collectionId,
+        databaseId: AppConstant.database,
     );
-    return List<Map<String, dynamic>>.from(res.data['documents'])
+    return List<Map<String, dynamic>>.from(res.toMap()['documents'])
         .map((e) => AddData.fromMap(e))
         .toList();
   }
 
   Future deleteData({String documentId}) async {
     return await _db.deleteDocument(
-        collectionId: AppConstant.database, documentId: documentId);
+        collectionId: AppConstant.database, documentId: documentId, databaseId: AppConstant.database);
   }
 
   Future<AddData> editData({
@@ -89,34 +96,38 @@ class ApiService {
   }) async {
     final res = await _db.updateDocument(
       collectionId: AppConstant.database,
+      databaseId: AppConstant.database,
       documentId: documentId,
       data: addData.toMap(),
-      read: read,
-      write: write,
+      permissions: [
+        'read',
+        'write',
+      ],
     );
 
     return AddData.fromMap(res.data);
   }
 
   Future<Map<String, dynamic>> uploadPicture(
-    MultipartFile file,
+      file,
     List<String> permission,
   ) async {
     var res = await _storage.createFile(
+      bucketId: AppConstant.bucketId,
       file: file,
-      read: permission,
-      write: permission,
+      permissions: permission,
+      fileId: file.name,
     );
-    return res.data;
+    return res.toMap();
   }
 
   Future<Map<String, dynamic>> updatePrefs(Map<String, dynamic> prefs) async {
     final res = await _account.updatePrefs(prefs: prefs);
-    return res.data;
+    return res.toMap();
   }
 
   Future<Uint8List> getProfile(String fileId) async {
-    final res = await _storage.getFilePreview(fileId: fileId);
-    return res.data;
+    final res = await _storage.getFilePreview(fileId: fileId, bucketId: AppConstant.bucketId);
+    return res.toList();
   }
 }
