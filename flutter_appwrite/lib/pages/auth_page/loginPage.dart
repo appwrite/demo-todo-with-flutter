@@ -10,12 +10,15 @@ import 'package:easy_one/widget/textButton.dart';
 import 'package:easy_one/widget/textFormField_widget.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../data/model/user_model.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+  User user;
   TextEditingController _email = TextEditingController();
 
   TextEditingController _password = TextEditingController();
@@ -54,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                   if (val.isEmpty) return 'Email can\'t be empty';
                   return null;
                 },
-                hintText: 'enter your full name',
+                hintText: 'enter your email',
               ),
               SizedBox(
                 height: size.height * 0.02,
@@ -82,9 +85,8 @@ class _LoginPageState extends State<LoginPage> {
                   var password = _password.text;
                   if (_globalKey.currentState.validate()) {
                     try {
-                      await ApiService.instance
+                      final user = await ApiService.instance
                           .login(email: email, password: password);
-
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text("Welcome to EasyOne"),
@@ -92,9 +94,11 @@ class _LoginPageState extends State<LoginPage> {
                       );
                       _password.clear();
                       _email.clear();
+//                       print(user);
                       pushReplacement(context, MainPage());
                     } on AppwriteException catch (e) {
-                      print(e);
+                      // print(e);
+                      print(e.message);
                       _password.clear();
                       _email.clear();
                       ScaffoldMessenger.of(context).showSnackBar(
