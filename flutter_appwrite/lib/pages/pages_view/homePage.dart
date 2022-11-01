@@ -1,3 +1,4 @@
+// import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:appwrite/appwrite.dart';
@@ -13,6 +14,7 @@ import 'package:easy_one/widget/makeText.dart';
 import 'package:easy_one/widget/routeHelper.dart';
 import 'package:easy_one/widget/textFormField_widget.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
@@ -31,7 +33,9 @@ class _HomePageState extends State<HomePage> {
 
   void _getDataInsert() async {
     gettingData = await ApiService.instance.insertData();
-    if (mounted) setState(() {});
+    if (mounted) setState(() {
+
+    });
   }
 
   @override
@@ -272,7 +276,7 @@ class _HomePageState extends State<HomePage> {
       source: ImageSource.gallery,
     );
     if (image == null) return;
-    final file = await MultipartFile.fromFile(image.path);
+    final file = await http.MultipartFile.fromPath('file', image.path);
     try {
       final res = await ApiService.instance.uploadPicture(
         file,
