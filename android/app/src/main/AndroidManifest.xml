@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.demo_todo_with_flutter">
+    package="io.appwrite.demo_todo_with_flutter">
    <application
         android:label="demo_todo_with_flutter"
         android:name="${applicationName}"
