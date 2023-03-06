@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
     final size = MediaQuery.of(context).size;
     return SafeArea(
         child: Scaffold(
-      backgroundColor: Colors.indigo.withOpacity(0.6),
+      backgroundColor: Colors.black.withOpacity(0.9),
       body: Form(
         key: _globalKey,
         child: Padding(
@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                   if (val.isEmpty) return 'Email can\'t be empty';
                   return null;
                 },
-                hintText: 'enter your full name',
+                hintText: 'enter your email',
               ),
               SizedBox(
                 height: size.height * 0.02,

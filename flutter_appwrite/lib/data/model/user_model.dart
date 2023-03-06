@@ -6,8 +6,8 @@ class User {
   String id;
   String name;
   DateTime registration;
-  int status;
-  int passwordUpdate;
+  bool status;
+  DateTime passwordUpdate;
   String email;
   bool emailVerification;
   Map<String, dynamic> prefs;
@@ -61,10 +61,9 @@ class User {
     return User(
       id: map['\$id'],
       name: map['name'],
-      registration:
-          DateTime.fromMillisecondsSinceEpoch(map['registration'] * 1000),
+      registration: DateTime.parse(map['registration']),
       status: map['status'],
-      passwordUpdate: map['passwordUpdate'],
+      passwordUpdate: DateTime.parse(map['passwordUpdate']),
       email: map['email'],
       emailVerification: map['emailVerification'],
       prefs: Map<String, dynamic>.from(map['prefs']),

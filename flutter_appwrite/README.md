@@ -47,16 +47,18 @@ You have two options to deploy the front-end and we will cover both of them here
 
 Follow these instructions to run the demo app locally
 
-$ git clone https://github.com/devkishor8007/todo-with-flutter.git
+$ git clone https://github.com/appwrite/demo-todo-with-flutter.git
 $ cd todo-with-flutter
 
-Make a one file in the Clone Repo called constant.dart
+Make a one file in constant.dart
 
-    class AppConstant {
+```dart
+class AppConstant {
     static const String projectid = 'your appwrite project id';
     static const String endPoint = 'your own endpoint';
     static const String database = 'your appwrite database id';
-    }
+}
+```
 
 Now run the following commands and you should be good to go 💪🏼
 

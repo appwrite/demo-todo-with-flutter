@@ -182,8 +182,6 @@ class _ShowDetailPageState extends State<ShowDetailPage> {
                                             await ApiService.instance.editData(
                                           addData: checkData,
                                           documentId: widget.addData.id,
-                                          write: ['user:${widget.user.id}'],
-                                          read: ['user:${widget.user.id}'],
                                         );
                                         print(added);
                                         _getDataInsert();

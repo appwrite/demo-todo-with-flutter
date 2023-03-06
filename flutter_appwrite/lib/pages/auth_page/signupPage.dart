@@ -19,7 +19,7 @@ class SignUp extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return SafeArea(
         child: Scaffold(
-      backgroundColor: Colors.indigo.withOpacity(0.6),
+      backgroundColor: Colors.black.withOpacity(0.9),
       body: Form(
         key: _globalKey,
         child: Padding(
