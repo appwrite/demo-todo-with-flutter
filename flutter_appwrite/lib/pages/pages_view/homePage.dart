@@ -76,10 +76,11 @@ class _HomePageState extends State<HomePage> {
                     decoration: BoxDecoration(
                       color: Colors.indigo.shade500,
                     ),
-                    currentAccountPicture: widget.user.prefs['photo'] != null
+                    currentAccountPicture: widget.user.prefs['data']['photo'] !=
+                            null
                         ? FutureBuilder(
                             future: ApiService.instance.getProfile(
-                              widget.user.prefs['photo'],
+                              widget.user.prefs['data']['photo'],
                             ),
                             builder: (_, snapshot) {
                               return CircleAvatar(
@@ -98,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                   ),
                   Positioned(
-                      left: size.width * 0.2,
+                      left: size.width * 0.05,
                       top: size.height * 0.05,
                       child: IconButton(
                         tooltip: "Change Image",
@@ -270,15 +271,21 @@ class _HomePageState extends State<HomePage> {
   }
 
   _upload() async {
-    var image = await ImagePicker().getImage(
+    var image = await ImagePicker().pickImage(
       source: ImageSource.gallery,
     );
     if (image == null) return;
-    final file = InputFile(path: image.path);
+    final file = InputFile(
+        filename: await image.name,
+        contentType: await image.mimeType,
+        bytes: await image.readAsBytes());
     try {
       final res = await ApiService.instance.uploadPicture(
-        file,
-        ['user:${widget.user.id}'],
+        file: file,
+        permissions: [
+          Permission.update(Role.user(widget.user.id)),
+          Permission.delete(Role.user(widget.user.id))
+        ],
       );
       final id = res.$id;
       if (id != null) {
