@@ -6,7 +6,7 @@ A simple todo app built with Flutter and Appwrite
 
 Appwrite is an end-to-end backend server for Web, Mobile, Native, or Backend apps packaged as a set of Docker microservices. Appwrite abstracts the complexity and repetitiveness required to build a modern backend API from scratch and allows you to build secure apps faster.
 
-### 🤘 Install Appwrite
+## 🤘 Install Appwrite
 
 Follow our simple [Installation Guide](https://appwrite.io/docs/installation) to get Appwrite up and running in no time. You can either deploy Appwrite on your local machine or, on any cloud provider of your choice.
 
@@ -15,25 +15,35 @@ Follow our simple [Installation Guide](https://appwrite.io/docs/installation) to
 
 We need to make a few configuration changes to your Appwrite server.
 
-1. Add a new Flutter App (Android or iOS or both) in Appwrite and enter application id of your application (io.appwrite.todo, etc) 
-![image](https://user-images.githubusercontent.com/73419211/122684732-e9eac700-d226-11eb-954c-f7cb5327d042.png)
+### Add a new Flutter App in Appwrite and enter application id of your application (io.appwrite.todo, etc)
+![image](https://user-images.githubusercontent.com/3102249/223205820-3b989f50-9dca-41c6-95c7-a47cbee16826.png)
 
-2. Create a new collection with the following properties
+### Create a new database
 
-  - Rules
+  ![image](https://user-images.githubusercontent.com/3102249/223206444-fac1e291-a85c-4355-8b35-cfeb4a45d8f1.png)
 
-Add the following rules to the collection.
+### Within your new database create a new collection with the following properties
 
-    Make sure that your key exactly matches the key in the images
+Add the following attributes to the collection.
+
+![image](https://user-images.githubusercontent.com/3102249/223208230-2544a673-7a78-4690-b818-03d421959dd7.png)
+
+Make sure that your key exactly matches the key in the images
    
-  ![image](https://user-images.githubusercontent.com/73419211/122684906-0a675100-d228-11eb-91d0-ff70e216b7cb.png)
-  ![image](https://user-images.githubusercontent.com/73419211/122684925-2965e300-d228-11eb-87a6-301cff857fb9.png)
-
- - Permissions
+![image](https://user-images.githubusercontent.com/3102249/223206238-ef000bf3-dff7-4ab2-ad9d-dc4fcf384a0f.png)
 
 Add the following permissions to your collections. These permissions ensure that only registered users can access the collection.
 
-![image](https://user-images.githubusercontent.com/73419211/122684974-819ce500-d228-11eb-93c6-4d2b05167633.png)
+![image](https://user-images.githubusercontent.com/3102249/223206691-7588e8a1-1646-452d-a830-12dd1ae07664.png)
+
+### Create a new bucket
+
+Creat a bucket with any name you would like.
+![](https://user-images.githubusercontent.com/3102249/223208521-02f96657-f131-49ab-8f26-97c514351886.png)
+
+Make sure to update the bucket permissions to allow create and file level security.
+
+![image](https://user-images.githubusercontent.com/3102249/223221645-8ef1a40b-5ebc-4845-8a76-dc3e526eb3cc.png)
 
 ## 🚀 Deploy the Front End
 
@@ -41,28 +51,34 @@ You have two options to deploy the front-end and we will cover both of them here
 
     FLUTTER_APP_ENDPOINT - Your Appwrite endpoint
     FLUTTER_APP_PROJECT - Your Appwrite project ID
+    FLUTTER_APP_DATABASE_ID = Your Appwrite database ID
     FLUTTER_APP_COLLECTION_ID - Your Appwrite collection ID
+    FLUTTER_APP_STORAGE_BUCKET_ID - Your Appwrite Storage Bucket ID
   
 ## Run locally
 
 Follow these instructions to run the demo app locally
 
-$ git clone https://github.com/devkishor8007/todo-with-flutter.git
-$ cd todo-with-flutter
+`git clone https://github.com/appwrite/demo-todo-with-flutter.git`
 
-Make a one file in the Clone Repo called constant.dart
+`cd demo-todo-with-flutter`
 
-    class AppConstant {
-    static const String projectid = 'your appwrite project id';
+Make a one file in the Clone Repo called `lib/res/constant.dart
+
+```dart
+class AppConstant {
     static const String endPoint = 'your own endpoint';
+    static const String projectid = 'your appwrite project id';
     static const String database = 'your appwrite database id';
-    }
+    static const String collection = 'your appwrite collection id';
+    static const String bucket = 'your appwrite storage bucket id';
+}
+```
 
 Now run the following commands and you should be good to go 💪🏼
 
-$ flutter pub get
-$ flutter run
-
+`flutter pub get`
+`flutter run`
 
 ## Features
 
@@ -82,13 +98,4 @@ $ flutter run
 
 ## 🤕 Support
 
-If you get stuck anywhere, hop onto one of our [support channels in discord](https://discord.com/invite/GSeTUeA) and we'd be delighted to help you out 🤝
-
-## 😧 Help Wanted
-
-Our access credentials were recently compromised and someone tried to ruin these demos. They decided to leave behind 15 easter eggs 🥚 for you to discover. If you find them, submit a PR cleaning up that section of the code (One PR per person across all the repos). You can track the number of claimed Easter Eggs using the badge at the top.
-
-The first 15 people to get their PRs merged will receive some Appwrite Swags 🤩 . Just head over to our [Discord channel](https://discord.com/invite/GSeTUeA)
- and share your PR link with us.
-
-> *UPDATE **17-11-2021**:* The easter egg contest is now closed. 
+If you get stuck anywhere, hop onto one of our [support channels in discord](https://discord.com/appwrite) and we'd be delighted to help you out 🤝
