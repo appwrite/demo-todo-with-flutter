@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:easy_one/data/model/user_model.dart';
 import 'package:easy_one/data/services/api_service.dart';
 import 'package:easy_one/pages/auth_page/loginPage.dart';
 import 'package:easy_one/pages/pages_view/homePage.dart';
+import 'package:appwrite/models.dart' as models;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +31,7 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<User>(
+    return FutureBuilder<models.Account>(
         future: ApiService.instance.getUser(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting)

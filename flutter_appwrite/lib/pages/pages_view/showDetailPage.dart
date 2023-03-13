@@ -3,17 +3,17 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:easy_one/data/model/addData_model.dart';
-import 'package:easy_one/data/model/user_model.dart';
 import 'package:easy_one/data/services/api_service.dart';
 import 'package:easy_one/pages/pages_view/homePage.dart';
 import 'package:easy_one/widget/elevatedButton_widget.dart';
 import 'package:easy_one/widget/makeText.dart';
 import 'package:easy_one/widget/routeHelper.dart';
 import 'package:easy_one/widget/textFormField_widget.dart';
+import 'package:appwrite/models.dart' as models;
 
 class ShowDetailPage extends StatefulWidget {
   final AddData addData;
-  final User user;
+  final models.Account user;
   ShowDetailPage({this.addData, this.user});
 
   @override

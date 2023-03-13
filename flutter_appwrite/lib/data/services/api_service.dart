@@ -1,14 +1,10 @@
-import 'dart:convert';
-import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart' as models;
 import 'package:easy_one/data/model/addData_model.dart';
-import 'package:easy_one/data/model/user_model.dart';
 
 import 'package:easy_one/res/constant.dart';
-import 'package:flutter/material.dart';
 
 class ApiService {
   static ApiService _instance;
@@ -51,10 +47,8 @@ class ApiService {
     return _account.deleteSession(sessionId: 'current');
   }
 
-  Future<User> getUser() async {
-    final res = await _account.get();
-    final user = User.fromMap(res.toMap());
-    return user;
+  Future<models.Account> getUser() async {
+    return _account.get();
   }
 
   Future<AddData> getAddData({

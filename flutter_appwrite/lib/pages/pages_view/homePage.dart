@@ -4,7 +4,6 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:easy_one/data/model/addData_model.dart';
-import 'package:easy_one/data/model/user_model.dart';
 import 'package:easy_one/data/services/api_service.dart';
 import 'package:easy_one/main.dart';
 import 'package:easy_one/pages/pages_view/showDetailPage.dart';
@@ -13,10 +12,11 @@ import 'package:easy_one/widget/makeText.dart';
 import 'package:easy_one/widget/routeHelper.dart';
 import 'package:easy_one/widget/textFormField_widget.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:appwrite/models.dart' as models;
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
-  User user;
+  models.Account user;
   HomePage({this.user});
 
   @override
@@ -76,11 +76,11 @@ class _HomePageState extends State<HomePage> {
                     decoration: BoxDecoration(
                       color: Colors.indigo.shade500,
                     ),
-                    currentAccountPicture: widget.user.prefs['data']['photo'] !=
+                    currentAccountPicture: widget.user.prefs.data['photo'] !=
                             null
                         ? FutureBuilder(
                             future: ApiService.instance.getProfile(
-                              widget.user.prefs['data']['photo'],
+                              widget.user.prefs.data['photo'],
                             ),
                             builder: (_, snapshot) {
                               return CircleAvatar(
@@ -251,8 +251,8 @@ class _HomePageState extends State<HomePage> {
                         var added = await ApiService.instance.getAddData(
                           addData: checkData,
                           permissions: [
-                            Permission.update(Role.user(widget.user.id)),
-                            Permission.delete(Role.user(widget.user.id))
+                            Permission.update(Role.user(widget.user.$id)),
+                            Permission.delete(Role.user(widget.user.$id))
                           ],
                         );
                         print(added);
@@ -281,10 +281,11 @@ class _HomePageState extends State<HomePage> {
         bytes: await image.readAsBytes());
     try {
       final res = await ApiService.instance.uploadPicture(
-        file: file,
-        permissions: [
-          Permission.update(Role.user(widget.user.id)),
-          Permission.delete(Role.user(widget.user.id))
+        file,
+        [
+          Permission.read(Role.user(widget.user.$id)),
+          Permission.update(Role.user(widget.user.$id)),
+          Permission.delete(Role.user(widget.user.$id))
         ],
       );
       final id = res.$id;
