@@ -11,10 +11,20 @@ class Appwrite {
     return instance;
   }
 
+  Future<void> initialize() {
+    return client.setOfflinePersistency(
+      status: true,
+      onWriteQueueError: (e) {
+        print(e);
+      },
+    );
+  }
+
   Appwrite._internal() {
     client = Client()
         .setEndpoint(constants.appwriteEndpoint)
         .setProject(constants.appwriteProjectId)
-        .setSelfSigned(status: constants.appwriteSelfSigned);
+        .setSelfSigned(status: constants.appwriteSelfSigned)
+        .setOfflineCacheSize(2500);
   }
 }

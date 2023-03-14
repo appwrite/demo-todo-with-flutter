@@ -44,6 +44,7 @@ class TodoListTile extends StatelessWidget {
                   : TextDecoration.none,
             ),
       ),
+      subtitle: Text(todo.id),
     );
   }
 }

@@ -15,12 +15,12 @@ class TodosService {
     return documentList.documents.map((d) => Todo.fromMap(d.data)).toList();
   }
 
-  Future<Todo> create({required String content}) async {
+  Future<Todo> create({required Todo todo}) async {
     final document = await _databases.createDocument(
       databaseId: constants.appwriteDatabaseId,
       collectionId: constants.appwriteCollectionId,
-      documentId: ID.unique(),
-      data: {"content": content},
+      documentId: todo.id,
+      data: {"content": todo.content, "isComplete": todo.isComplete},
     );
 
     return Todo.fromMap(document.data);

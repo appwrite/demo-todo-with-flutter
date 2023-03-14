@@ -16,12 +16,13 @@ Note: If you setup Appwrite on your local machine, you will need to create a pub
 
 We need to make a few configuration changes to your Appwrite server.
 
-1. Add a new Flutter App (Android or iOS or both) in Appwrite:
+1. Add a new Flutter App in Appwrite:
 
    ![Console - Add platform](docs/Console%20-%20Add%20platform.png)
 
    1. Android - `io.appwrite.demo_todo_with_flutter`
    2. iOS/Mac OS - `io.appwrite.demoTodoWithFlutter`
+   3. Linux - `demo_todo_with_flutter`
 
 2. Create a project in the Appwrite Console with id `demo-todos`.
 

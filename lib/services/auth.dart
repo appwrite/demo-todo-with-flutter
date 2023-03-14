@@ -29,4 +29,8 @@ class AuthService {
   Future<void> logout() {
     return _account.deleteSession(sessionId: 'current');
   }
+
+  Future<models.Account> getUser() async {
+    return _account.get();
+  }
 }
