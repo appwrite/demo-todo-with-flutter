@@ -1,0 +1,5 @@
+const appwriteEndpoint = 'https://[HOSTNAME]/v1';
+const appwriteProjectId = 'demo-todo';
+const appwriteDatabaseId = 'default';
+const appwriteCollectionId = 'todos';
+const appwriteSelfSigned = true;
