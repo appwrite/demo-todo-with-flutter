@@ -1,8 +1,13 @@
+import 'package:appwrite/appwrite.dart';
+import 'package:demo_todo_with_flutter/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../services/appwrite.dart';
+import '../services/auth.dart';
 import '../widgets/animated_icon_button.dart';
 import 'auth.dart';
+import 'todos.dart';
 
 class Landing extends StatelessWidget {
   const Landing({Key? key}) : super(key: key);
@@ -92,10 +97,25 @@ class Landing extends StatelessWidget {
               ),
               const SizedBox(height: spacing),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Auth()),
+                onPressed: () async {
+                  final navigator = Navigator.of(context);
+                  final messenger = ScaffoldMessenger.of(context);
+                  await Appwrite.instance.initialize();
+                  final authService = AuthService();
+                  Widget nextRoute = const Auth();
+
+                  try {
+                    await authService.getUser();
+                    nextRoute = const Todos();
+                  } on AppwriteException catch (e) {
+                    if (e.code == 0) {
+                      messenger.showSnackBar(createErrorSnackBar(e.message));
+                      return;
+                    }
+                  }
+
+                  navigator.push(
+                    MaterialPageRoute(builder: (context) => nextRoute),
                   );
                 },
                 child: const Text('Get Started'),

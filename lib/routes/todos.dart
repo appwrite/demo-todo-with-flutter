@@ -1,3 +1,4 @@
+import 'package:appwrite/appwrite.dart';
 import 'package:demo_todo_with_flutter/utilities.dart';
 import 'package:flutter/material.dart';
 
@@ -48,19 +49,19 @@ class _TodosState extends State<Todos> {
   void submitTodo() async {
     if (inputController.text.isEmpty || isLoading) return;
     final messenger = ScaffoldMessenger.of(context);
-    try {
-      final newTodo = await todosService.create(content: inputController.text);
-      inputController.text = '';
-      setState(() {
-        todos.add(newTodo);
-      });
-    } catch (e) {
+    final newTodo = Todo(
+      content: inputController.text,
+      id: ID.unique(),
+    );
+    todosService.create(todo: newTodo).catchError((e) {
       messenger.showSnackBar(createErrorSnackBar(e.toString()));
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
-    }
+      todos.remove(newTodo);
+    });
+    inputController.text = '';
+    setState(() {
+      todos.add(newTodo);
+      isLoading = false;
+    });
   }
 
   @override
@@ -161,43 +162,40 @@ class _TodosState extends State<Todos> {
                           });
                           final messenger = ScaffoldMessenger.of(context);
                           todos[index].isComplete = !todos[index].isComplete;
-                          try {
-                            final updated =
-                                await todosService.update(todo: todos[index]);
-                            setState(() {
-                              todos[index] = updated;
-                            });
-                          } catch (e) {
-                            // restore value
-                            todos[index].isComplete = !todos[index].isComplete;
-                            messenger.showSnackBar(
-                                createErrorSnackBar(e.toString()));
-                          } finally {
-                            setState(() {
-                              isLoading = false;
-                            });
-                          }
+                          todosService.update(todo: todos[index]).catchError(
+                            (e) {
+                              // restore value
+                              setState(() {
+                                todos[index].isComplete =
+                                    !todos[index].isComplete;
+                              });
+                              messenger.showSnackBar(
+                                  createErrorSnackBar(e.toString()));
+                            },
+                          );
+
+                          setState(() {
+                            isLoading = false;
+                          });
                         },
                         delete: () async {
                           setState(() {
                             isLoading = true;
                           });
                           final messenger = ScaffoldMessenger.of(context);
-                          try {
-                            await todosService.delete(id: todos[index].id);
-                            setState(() {
-                              todos.removeAt(index);
-                            });
-                          } catch (e) {
+                          final todo = todos[index];
+                          todosService.delete(id: todo.id).catchError((e) {
                             // restore value
-                            todos[index].isComplete = !todos[index].isComplete;
+                            setState(() {
+                              todos.insert(index, todo);
+                            });
                             messenger.showSnackBar(
                                 createErrorSnackBar(e.toString()));
-                          } finally {
-                            setState(() {
-                              isLoading = false;
-                            });
-                          }
+                          });
+                          setState(() {
+                            todos.removeAt(index);
+                            isLoading = false;
+                          });
                         },
                       );
                     },

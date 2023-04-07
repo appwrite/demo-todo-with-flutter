@@ -23,7 +23,7 @@ class Todo {
 
   factory Todo.fromMap(Map<String, dynamic> json) => Todo(
         content: json["content"],
-        isComplete: json["isComplete"],
+        isComplete: json["isComplete"] ?? false,
         id: json["\u0024id"],
         createdAt: DateTime.parse(json["\u0024createdAt"]),
         updatedAt: DateTime.parse(json["\u0024updatedAt"]),
