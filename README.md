@@ -7,7 +7,7 @@ A simple todo app built with Flutter and Appwrite
 Appwrite is an end-to-end backend server for Web, Mobile, Native, or Backend apps packaged as a set of Docker microservices. Appwrite abstracts the complexity and repetitiveness required to build a modern backend API from scratch and allows you to build secure apps faster.
 
 ### 🤘 Create Appwrite Project
-The easiest way to get started with Appwrite is by [signing up for Appwrite Cloud](https://cloud.appwrite.io/).
+The easiest way to get started with Appwrite is by [signing up for Appwrite Cloud](https://cloud.appwrite.io/) and creating a new project.
 
 > If you want to try self-hosting Appwrite, follow our simple [Self-Hosting Guide](https://appwrite.io/docs/self-hosting) to get Appwrite up and running in no time. You can either deploy Appwrite on your local machine or, on any cloud provider of your choice. 
   
