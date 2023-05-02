@@ -18,7 +18,7 @@ We need to make a few configuration changes to your Appwrite server.
 
 1. Add a new Flutter App (Android or iOS or both) in Appwrite:
 
-   ![Console - Add platform](docs/Console%20-%20Add%20platform.png)
+   ![Console - Add platform](docs/New%20Console%20-%20Add%20platform.png)
 
    1. Android - `io.appwrite.demo_todo_with_flutter`
    2. iOS/Mac OS - `io.appwrite.demoTodoWithFlutter`
